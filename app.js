@@ -5,6 +5,8 @@ const connectDB = require("./config/db");
 const indexRouter = require("./routes");
 const authRouter = require("./routes/auth");
 const adminRouter = require("./routes/admin");
+const productRouter = require("./routes/product");
+const categoriesRouter = require("./routes/category");
 
 const expressSession = require("express-session");
 const path = require("path");
@@ -36,6 +38,8 @@ require("./config/google_oauth_config.js");
 app.use("/", indexRouter);
 app.use("/auth", authRouter);
 app.use("/admin", adminRouter);
+app.use("/products", productRouter);
+app.use("/categories", categoriesRouter);
 
 // Start server
 const port = process.env.PORT || 3000;

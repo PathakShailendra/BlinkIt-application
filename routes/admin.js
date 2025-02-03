@@ -2,8 +2,10 @@ const express = require("express");
 const router = express.Router();
 const { adminModel } = require("../models/admin");
 const { productModel } = require("../models/product");
+const { categoryModel } = require("../models/category");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { validateAdmin } = require("../middlewares/admin");
 
 require("dotenv").config();
 
@@ -60,8 +62,38 @@ router.post("/login", async function (req, res) {
 router.get("/dashboard", validateAdmin, async function (req, res) {
   let prodcount = await productModel.countDocuments();
   let categcount = await categoryModel.countDocuments();
-
   res.render("admin_dashboard", { prodcount, categcount });
+});
+
+router.get("/products", validateAdmin, async function (req, res) {
+  const resultArray = await productModel.aggregate([
+    {
+      $group: {
+        _id: "$category",
+        products: { $push: "$$ROOT" },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        category: "$_id",
+        products: { $slice: ["$products", 10] },
+      },
+    },
+  ]);
+
+  // Convert the array into an object
+  const resultObject = resultArray.reduce((acc, item) => {
+    acc[item.category] = item.products;
+    return acc;
+  }, {});
+
+  res.render("admin_products", { products: resultObject });
+});
+
+router.get("/logout", validateAdmin, function (req, res) {
+  res.cookie("token", "");
+  res.redirect("/admin/login");
 });
 
 module.exports = router;
