@@ -14,11 +14,10 @@ async function validateAdmin(req, res, next) {
   }
 }
 
-// async function userIsLoggedIn(req, res, next) {
-//   if (req.isAuthenticated()) return next();
-//   res.redirect("/users/login");
-// }
+async function userIsLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) return next();
+  res.redirect("/users/login");
+}
 
-// module.exports = { validateAdmin, userIsLoggedIn };
+module.exports = { validateAdmin, userIsLoggedIn };
 
-module.exports = { validateAdmin };

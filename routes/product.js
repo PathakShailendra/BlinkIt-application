@@ -3,12 +3,45 @@ const router = express.Router();
 const upload = require("../config/multer_config");
 const { productModel, validateProduct } = require("../models/product");
 const { categoryModel, validateCategory } = require("../models/category");
-const { validateAdmin } = require("../middlewares/admin");
+const { validateAdmin, userIsLoggedIn } = require("../middlewares/admin");
 
-router.get("/", async (req, res) => {
-  const products = await productModel.find();
-  res.send(products);
+router.get("/", userIsLoggedIn, async function (req, res) {
+  let somethingInCart = false;
+  const resultArray = await productModel.aggregate([
+    {
+      $group: {
+        _id: "$category",
+        products: { $push: "$$ROOT" },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        category: "$_id",
+        products: { $slice: ["$products", 10] },
+      },
+    },
+  ]);
+
+  // let cart = await cartModel.findOne({ user: req.session.passport.user });
+
+  // if (cart && cart.products.length > 0) somethingInCart = true;
+
+  let rnproducts = await productModel.aggregate([{ $sample: { size: 3 } }]);
+
+  // Convert the array into an object
+  const resultObject = resultArray.reduce((acc, item) => {
+    acc[item.category] = item.products;
+    return acc;
+  }, {});
+  res.render("index", {
+    products: resultObject,
+    rnproducts,
+    // somethingInCart,
+    // cartCount: cart ? cart.products.length : 0,
+  });
 });
+
 
 router.get("/delete/:id", validateAdmin, async function (req, res) {
   if (req.user.admin) {
