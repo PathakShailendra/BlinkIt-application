@@ -31,7 +31,7 @@
                         </div>
                         <div class="ml-auto">
                             <div class="flex items-center justify-center bg-green-700 text-white rounded-md">
-                                <a href="/cart/remove/<%= elem._id %>" class="px-2 py-1 rounded"><i
+                                <a href="/cart/delete/<%= elem._id %>" class="px-2 py-1 rounded"><i
                                         class="ri-subtract-line"></i></a>
                                 <p class="mx-2">
                                     <%= elem.quantity %>
@@ -95,7 +95,7 @@
                 <div class="mt-2">
                     <div class="flex justify-between">
                         <p class="text-sm">Items total</p>
-                        <p class="text-sm">₹<%= finalprice - 34 %>
+                        <p class="text-sm">₹<%= finalprice %>
                         </p>
                     </div>
                     <div class="flex justify-between">
@@ -194,7 +194,7 @@
                 axios.post('/payment/create/orderId')
                     .then(function (response) {
                         var options = {
-                            "key": "rzp_test_cAa3gCF0eP8i4R", // Enter the Key ID generated from the Dashboard
+                            "key": "rzp_test_zciTpuqDmjFlXM", // Enter the Key ID generated from the Dashboard
                             "amount": response.data.amount, // Amount in currency subunits. Default currency is INR.
                             "currency": response.data.currency,
                             "name": "BlinkIt",

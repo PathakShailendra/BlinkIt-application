@@ -8,6 +8,7 @@ const adminRouter = require("./routes/admin");
 const productRouter = require("./routes/product");
 const categoriesRouter = require("./routes/category");
 const userRouter = require("./routes/user");
+const cartRouter = require("./routes/cart");
 
 const expressSession = require("express-session");
 const path = require("path");
@@ -42,6 +43,7 @@ app.use("/admin", adminRouter);
 app.use("/products", productRouter);
 app.use("/categories", categoriesRouter);
 app.use("/users", userRouter);
+app.use("/cart", cartRouter);
 
 // Start server
 const port = process.env.PORT || 3000;

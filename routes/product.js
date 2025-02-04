@@ -3,6 +3,7 @@ const router = express.Router();
 const upload = require("../config/multer_config");
 const { productModel, validateProduct } = require("../models/product");
 const { categoryModel, validateCategory } = require("../models/category");
+const { cartModel, validateCart } = require("../models/cart");
 const { validateAdmin, userIsLoggedIn } = require("../middlewares/admin");
 
 router.get("/", userIsLoggedIn, async function (req, res) {
@@ -23,9 +24,9 @@ router.get("/", userIsLoggedIn, async function (req, res) {
     },
   ]);
 
-  // let cart = await cartModel.findOne({ user: req.session.passport.user });
+  let cart = await cartModel.findOne({ user: req.session.passport.user });
 
-  // if (cart && cart.products.length > 0) somethingInCart = true;
+  if (cart && cart.products.length > 0) somethingInCart = true;
 
   let rnproducts = await productModel.aggregate([{ $sample: { size: 3 } }]);
 
@@ -37,8 +38,8 @@ router.get("/", userIsLoggedIn, async function (req, res) {
   res.render("index", {
     products: resultObject,
     rnproducts,
-    // somethingInCart,
-    // cartCount: cart ? cart.products.length : 0,
+    somethingInCart,
+    cartCount: cart ? cart.products.length : 0,
   });
 });
 
