@@ -26,8 +26,7 @@ router.get(
         status: "processing",
         payment: paymentDetails._id,
       });
-    //   res.redirect(`/map/${req.params.orderid}`);
-    res.send("valid payment")
+      res.redirect(`/map/${req.params.orderid}`);
     } else {
       res.send("invalid payment");
     }
