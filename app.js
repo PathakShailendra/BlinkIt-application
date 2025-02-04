@@ -9,6 +9,7 @@ const productRouter = require("./routes/product");
 const categoriesRouter = require("./routes/category");
 const userRouter = require("./routes/user");
 const cartRouter = require("./routes/cart.js");
+const orderRouter = require("./routes/order");
 
 const expressSession = require("express-session");
 const path = require("path");
@@ -46,6 +47,7 @@ app.use("/categories", categoriesRouter);
 app.use("/users", userRouter);
 app.use("/cart", cartRouter);
 app.use("/payment", paymentRouter);
+app.use("/order", orderRouter);
 
 // Start server
 const port = process.env.PORT || 3000;
