@@ -8,12 +8,13 @@ const adminRouter = require("./routes/admin");
 const productRouter = require("./routes/product");
 const categoriesRouter = require("./routes/category");
 const userRouter = require("./routes/user");
-const cartRouter = require("./routes/cart");
+const cartRouter = require("./routes/cart.js");
 
 const expressSession = require("express-session");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
+const paymentRouter = require("./routes/payment");
 
 // Connect to MongoDB
 connectDB();
@@ -44,6 +45,7 @@ app.use("/products", productRouter);
 app.use("/categories", categoriesRouter);
 app.use("/users", userRouter);
 app.use("/cart", cartRouter);
+app.use("/payment", paymentRouter);
 
 // Start server
 const port = process.env.PORT || 3000;
